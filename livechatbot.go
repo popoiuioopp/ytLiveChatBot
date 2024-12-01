@@ -53,12 +53,12 @@ func readChat(service *youtube.Service, chatId string) <-chan *youtube.LiveChatM
 	go func(chatId string) {
 		defer close(messageChannel)
 
-		var nextPageToken string = "";
+		var nextPageToken string = ""
 
 		for {
 			// get live chats from chatId
 			call := service.LiveChatMessages.List(chatId, []string{"snippet", "authorDetails"})
-			call.PageToken(nextPageToken);
+			call.PageToken(nextPageToken)
 			response, err := call.Do()
 			if err != nil {
 				fmt.Println("Closing Channel: ", chatId, " Error getting live chat messages:", err)
@@ -66,10 +66,10 @@ func readChat(service *youtube.Service, chatId string) <-chan *youtube.LiveChatM
 			}
 
 			for _, item := range response.Items {
-					messageChannel <- item
+				messageChannel <- item
 			}
-			nextPageToken = response.NextPageToken;
-			
+			nextPageToken = response.NextPageToken
+
 			time.Sleep(time.Millisecond * time.Duration((float64(response.PollingIntervalMillis) * (1 + extraPercent))))
 		}
 	}(chatId)
@@ -103,14 +103,13 @@ func writeChat(service *youtube.Service, chatId string) chan<- string {
 	return messageChannel
 }
 
-
 // parallely fetch chatIds from urls
-// alternate solution : https://stackoverflow.com/questions/40809504/idiomatic-goroutine-termination-and-error-handling 
+// alternate solution : https://stackoverflow.com/questions/40809504/idiomatic-goroutine-termination-and-error-handling
 func fetchChatIds(urls []string, service *youtube.Service) map[string]string {
-	
+
 	type job struct {
-    url string
-    chatId string
+		url    string
+		chatId string
 	}
 
 	responseChannel := make(chan job)
@@ -137,7 +136,7 @@ func fetchChatIds(urls []string, service *youtube.Service) map[string]string {
 	chatIds := make(map[string]string)
 	for range urls {
 		j := <-responseChannel
-		chatIds[j.url] = j.chatId;
+		chatIds[j.url] = j.chatId
 	}
 
 	return chatIds

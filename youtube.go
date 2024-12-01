@@ -4,8 +4,8 @@ package ytbot
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
@@ -25,25 +25,26 @@ import (
 // initiate the authorization flow or just display the URL in the terminal
 // window. Note the following instructions based on this setting:
 // * launchWebServer = true
-//   1. Use OAuth2 credentials for a web application
-//   2. Define authorized redirect URIs for the credential in the Google APIs
-//      Console and set the RedirectURL property on the config object to one
-//      of those redirect URIs. For example:
-//      config.RedirectURL = "http://localhost:8090"
-//   3. In the startWebServer function below, update the URL in this line
-//      to match the redirect URI you selected:
-//         listener, err := net.Listen("tcp", "localhost:8090")
-//      The redirect URI identifies the URI to which the user is sent after
-//      completing the authorization flow. The listener then captures the
-//      authorization code in the URL and passes it back to this script.
+//  1. Use OAuth2 credentials for a web application
+//  2. Define authorized redirect URIs for the credential in the Google APIs
+//     Console and set the RedirectURL property on the config object to one
+//     of those redirect URIs. For example:
+//     config.RedirectURL = "http://localhost:8090"
+//  3. In the startWebServer function below, update the URL in this line
+//     to match the redirect URI you selected:
+//     listener, err := net.Listen("tcp", "localhost:8090")
+//     The redirect URI identifies the URI to which the user is sent after
+//     completing the authorization flow. The listener then captures the
+//     authorization code in the URL and passes it back to this script.
+//
 // * launchWebServer = false
-//   1. Use OAuth2 credentials for an installed application. (When choosing
-//      the application type for the OAuth2 client ID, select "Other".)
-//   2. Set the redirect URI to "urn:ietf:wg:oauth:2.0:oob", like this:
-//      config.RedirectURL = "urn:ietf:wg:oauth:2.0:oob"
-//   3. When running the script, complete the auth flow. Then copy the
-//      authorization code from the browser and enter it on the command line.
-const launchWebServer = false
+//  1. Use OAuth2 credentials for an installed application. (When choosing
+//     the application type for the OAuth2 client ID, select "Other".)
+//  2. Set the redirect URI to "urn:ietf:wg:oauth:2.0:oob", like this:
+//     config.RedirectURL = "urn:ietf:wg:oauth:2.0:oob"
+//  3. When running the script, complete the auth flow. Then copy the
+//     authorization code from the browser and enter it on the command line.
+const launchWebServer = true
 
 // getClient uses a Context and Config to retrieve a Token
 // then generate a Client. It returns the generated Client.
@@ -112,7 +113,8 @@ func startWebServer() (codeCh chan string, err error) {
 
 // openURL opens a browser window to the specified location.
 // This code originally appeared at:
-//   http://stackoverflow.com/questions/10377243/how-can-i-launch-a-process-that-is-not-a-file-in-go
+//
+//	http://stackoverflow.com/questions/10377243/how-can-i-launch-a-process-that-is-not-a-file-in-go
 func openURL(url string) error {
 	var err error
 	switch runtime.GOOS {

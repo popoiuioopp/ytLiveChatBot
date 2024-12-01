@@ -1,4 +1,4 @@
-module github.com/popoiuioopp/ytLiveChatBot/v0.0.3
+module github.com/popoiuioopp/ytLiveChatBot
 
 go 1.17
 
